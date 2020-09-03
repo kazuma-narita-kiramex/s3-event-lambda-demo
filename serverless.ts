@@ -31,15 +31,22 @@ const serverlessConfiguration: Serverless = {
     logRetentionInDays: 7
   },
   functions: {
-    hello: {
-      handler: 'handler.hello',
+    s3Func: {
+      handler: 'handler.s3Func',
       memorySize: 128,
       timeout: 30,
       events: [
         {
-          http: {
-            method: 'get',
-            path: 'hello',
+          s3: {
+            bucket: 'example-bucket',
+            event: 's3:ObjectCreated:*',
+            rules: [
+              {
+                prefix: '*',
+                suffix: '*'
+              }
+            ],
+            existing: true,
           }
         }
       ]
