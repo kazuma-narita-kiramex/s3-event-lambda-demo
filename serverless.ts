@@ -12,7 +12,8 @@ const serverlessConfiguration: Serverless = {
     webpack: {
       webpackConfig: './webpack.config.js',
       includeModules: true
-    }
+    },
+    defaultProfile: 'default'
   },
   // Add the serverless-webpack plugin
   plugins: ['serverless-webpack'],
@@ -25,10 +26,15 @@ const serverlessConfiguration: Serverless = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
     },
+    region: 'ap-northeast-1',
+    profile: '${opt:profile, self:custom.defaultProfile}',
+    logRetentionInDays: 7
   },
   functions: {
     hello: {
       handler: 'handler.hello',
+      memorySize: 128,
+      timeout: 30,
       events: [
         {
           http: {
